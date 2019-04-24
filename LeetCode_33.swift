@@ -1,11 +1,11 @@
 class Solution {
     func search(_ nums: [Int], _ target: Int) -> Int {
         if nums.count == 0 { return -1 }
-        let breakPoint = find_breakPoint(nums)
+        let breakPoint = find_breakpoint(nums)
         return binary_search(nums, target, offset: breakPoint)
     }
 
-    func find_breakPoint(_ numbers: [Int]) -> Int {
+    func find_breakpoint(_ numbers: [Int]) -> Int {
         for (index, number) in numbers.enumerated() {
             if number < numbers[0] { return index }
         }
