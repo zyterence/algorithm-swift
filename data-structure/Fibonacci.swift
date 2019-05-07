@@ -5,7 +5,7 @@ struct Fibonacci: IteratorProtocol, Sequence {
     
     var state = (curr: 0, next: 1)
     
-    mutating func next() -> Iterator.Element? {
+    mutating func next() -> Element? {
         let curr = state.curr
         state = (curr: state.next, next: state.curr + state.next)
         return curr
