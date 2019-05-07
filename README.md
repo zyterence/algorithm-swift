@@ -1,1 +1,1 @@
-# leetcode-swift
+# algorithm-swift
