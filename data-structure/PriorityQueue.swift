@@ -33,6 +33,12 @@ private extension Int {
     }
 }
 
+extension PriorityQueue: CustomStringConvertible {
+    public var description: String {
+        return self.queue.description
+    }
+}
+
 class PriorityQueue<Element: Comparable> {
     
     private var queue: Array<Element>
@@ -51,7 +57,7 @@ extension PriorityQueue: Queue {
     @discardableResult
     public func add(_ item: Element) -> Bool {
         queue.append(item)
-        
+        heapifyUp(from: queue.count - 1)
         return true
     }
     
@@ -135,3 +141,23 @@ extension PriorityQueue: Queue {
         queue[secondIndex] = firstItem
     }
 }
+
+let queue = PriorityQueue<Int>()
+
+queue.add(10)
+queue.add(5)
+queue.add(6)
+queue.add(9)
+queue.add(1)
+queue.add(20)
+queue.add(3)
+queue.add(10)
+queue.add(1)
+
+
+print(queue)
+
+queue.dequeue()
+queue.dequeue()
+
+print(queue)
