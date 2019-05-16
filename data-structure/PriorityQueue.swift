@@ -157,7 +157,7 @@ queue.add(1)
 
 print(queue)
 
-queue.dequeue()
-queue.dequeue()
+print(queue.dequeue()!)
+print(queue.dequeue()!)
 
 print(queue)

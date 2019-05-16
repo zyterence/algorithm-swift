@@ -121,10 +121,10 @@ public struct LinkedList<Value> {
         }
         copyNodes()
         return node.next?.value
-    }
+    } 
     
     private mutating func copyNodes() {
-        guard var oldNode = head else {
+        guard var oldNode = head, !isKnownUniquelyReferenced(&head) else {
             return
         }
         
@@ -193,6 +193,18 @@ extension LinkedList: Collection {
     
     public subscript(position: Index) -> Value {
         return position.node!.value
+    }
+}
+
+// challenges
+extension LinkedList {
+    //Challenge 1: Create a function that prints out the elements of a linked list in reverse order
+    static func printInReverse(_ node: Node<Value>?) {
+        guard let node = node else { return }
+        
+        printInReverse(node.next)
+        
+        print(node.value)
     }
 }
 
@@ -314,7 +326,9 @@ example(of: "linked list cow") {
     var list1 = LinkedList<Int>()
     list1.append(1)
     list1.append(2)
+    print("List1 uniquely referenced: \(isKnownUniquelyReferenced(&list1.head))")
     var list2 = list1
+    print("List1 uniquely referenced: \(isKnownUniquelyReferenced(&list1.head))")
     print("List1: \(list1)")
     print("List2: \(list2)")
     
@@ -323,3 +337,17 @@ example(of: "linked list cow") {
     print("List1: \(list1)")
     print("List2: \(list2)")
 }
+
+example(of: "reverse") {
+    var list = LinkedList<Int>()
+    list.append(1)
+    list.append(2)
+    list.append(3)
+    
+    print("original list")
+    print(list)
+    print("reversed values")
+    LinkedList.printInReverse(list.head)
+}
+
+
