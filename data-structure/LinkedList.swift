@@ -196,9 +196,10 @@ extension LinkedList: Collection {
     }
 }
 
-// challenges
+// linked list challenges
 extension LinkedList {
-    //Challenge 1: Create a function that prints out the elements of a linked list in reverse order
+    
+    // Challenge 1: Create a function that prints out the elements of a linked list in reverse order
     static func printInReverse(_ node: Node<Value>?) {
         guard let node = node else { return }
         
@@ -206,6 +207,26 @@ extension LinkedList {
         
         print(node.value)
     }
+    
+    // Challenge 2: Create a function that returns the middle node of a linked list
+    func getMiddleNode() -> Node<Value>? {
+        var slow = head
+        var fast = head
+        
+        while let nextFast = fast?.next {
+            fast = nextFast.next
+            slow = slow?.next
+        }
+        
+        return slow
+    }
+    
+    // Challenge 3: Create a function that reverses a linked list
+    
+    // Challenge 4: Create a function that takes two sorted linked lists and merges them into a single sorted linked list
+    
+    // Challenge 5: Create a function that removes all occurrences of a specific element from a linked list
+    
 }
 
 func example(of title: String, excute: ()->()) {
@@ -350,4 +371,15 @@ example(of: "reverse") {
     LinkedList.printInReverse(list.head)
 }
 
+example(of: "getting the middle node") {
+    var list = LinkedList<Int>()
+    list.push(3)
+    list.push(2)
+    list.push(1)
 
+    print(list)
+
+    if let middleNode = list.getMiddleNode() {
+        print(middleNode)
+    }
+}
