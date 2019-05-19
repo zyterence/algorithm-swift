@@ -222,6 +222,23 @@ extension LinkedList {
     }
     
     // Challenge 3: Create a function that reverses a linked list
+    mutating func reverse() {
+        copyNodes()
+        
+        tail = head
+        var prev = head
+        var current = head?.next
+        prev?.next = nil
+        
+        while current != nil {
+            let next = current?.next
+            current?.next = prev
+            prev = current
+            current = next
+        }
+        
+        head = prev
+    }
     
     // Challenge 4: Create a function that takes two sorted linked lists and merges them into a single sorted linked list
     
@@ -382,4 +399,15 @@ example(of: "getting the middle node") {
     if let middleNode = list.getMiddleNode() {
         print(middleNode)
     }
+}
+
+example(of: "reversing a list") {
+    var list = LinkedList<Int>()
+    list.push(3)
+    list.push(2)
+    list.push(1)
+    
+    print("Original list: \(list)")
+    list.reverse()
+    print("Reversed list: \(list)")
 }

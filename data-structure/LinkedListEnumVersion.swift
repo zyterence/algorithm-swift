@@ -1,10 +1,7 @@
-indirect enum List<Element> {
+enum List<Element> {
 	case empty
-	case cons(Element, List)
+	indirect case cons(Element, List)
 }
-
-let list: List<Int> = .cons(1, .cons(2, .cons(3, .empty)))
-dump(list)
 
 extension List {
 	func fold<Result>(_ emptyCase: Result, _ conCase: (Element, Result) -> Result) -> Result {
@@ -27,6 +24,23 @@ extension List {
 	}
 }
 
+// Tail Recursion
+extension List {
+	func reduce1<Result>(_ emptyCase: Result, _ consCase: (Element, Result) -> Result) -> Result {
+		var result = emptyCase
+		var copy = self
+		while case let .cons(x, xs) = copy {
+			result = consCase(x, result)
+			copy = xs
+		}
+		return result
+	}
+}
+
+
+let list: List<Int> = .cons(1, .cons(2, .cons(3, .empty)))
+dump(list)
+
 let r = list.fold(0, +)
 let t = list.fold(0, { _, result in result + 1})
 print(r)
@@ -35,3 +49,4 @@ print(t)
 dump(list.fold(List.empty, List.cons))
 dump(Array(1...3).reduce(List.empty, { .cons($1, $0)}))
 dump(list.reduce(List.empty, List.cons))
+dump(list.reduce1(List.empty, List.cons))
