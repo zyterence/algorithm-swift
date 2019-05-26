@@ -294,6 +294,27 @@ extension LinkedList {
     }
     
     // Challenge 5: Create a function that removes all occurrences of a specific element from a linked list
+    mutating func removeNodes(value: Value) {
+        while let head = self.head, head.value == value {
+            self.head = head.next
+        }
+        
+        var prev = head
+        var current = head?.next
+        
+        while let currentNode = current {
+            guard currentNode.value != value else {
+                prev?.next = currentNode.next
+                current = prev?.next
+                continue
+            }
+            
+            prev = currentNode
+            current = currentNode.next
+        }
+        
+        tail = prev
+    }
     
 }
 
@@ -479,4 +500,16 @@ example(of: "mergeing two sorted list") {
     print("Second list: \(anotherList)")
     let mergedList = LinkedList.merge(list, anotherList)
     print("Merged list: \(mergedList)")
+}
+
+example(of: "deleting duplicate nodes") {
+    var list = LinkedList<Int>()
+    list.push(3)
+    list.push(2)
+    list.push(2)
+    list.push(1)
+    list.push(1)
+    print(list)
+    list.removeNodes(value: 2)
+    print(list)
 }
