@@ -20,7 +20,7 @@ extension Node: CustomStringConvertible {
     }
 }
 
-public struct LinkedList<Value> {
+public struct LinkedList<Value> where Value: Comparable {
     
     public var head: Node<Value>?
     public var tail: Node<Value>?
@@ -241,6 +241,57 @@ extension LinkedList {
     }
     
     // Challenge 4: Create a function that takes two sorted linked lists and merges them into a single sorted linked list
+    static func merge(_ left: LinkedList, _ right: LinkedList) -> LinkedList {
+        guard !left.isEmpty else { return right }
+        guard !right.isEmpty else { return left }
+        
+        var newHead: Node<Value>?
+        var tail: Node<Value>?
+        
+        var currentLeft = left.head
+        var currentRight = right.head
+        
+        if let leftNode = currentLeft, let rightNode = currentRight {
+            if leftNode.value < rightNode.value {
+                newHead = leftNode
+                currentLeft = leftNode.next
+            } else {
+                newHead = rightNode
+                currentRight = rightNode.next
+            }
+            tail = newHead
+        }
+        
+        while let leftNode = currentLeft, let rightNode = currentRight {
+            if leftNode.value < rightNode.value {
+                tail?.next = leftNode
+                currentLeft = leftNode.next
+            } else {
+                tail?.next = rightNode
+                currentRight = rightNode.next
+            }
+            tail = tail?.next
+        }
+        
+        if let leftNodes = currentLeft {
+            tail?.next = leftNodes
+        }
+        
+        if let rightNodes = currentRight {
+            tail?.next = rightNodes
+        }
+        
+        var list = LinkedList<Value>()
+        list.head = newHead
+        list.tail = {
+            while let next = tail?.next {
+                tail = next
+            }
+            return tail
+        }()
+        
+        return list
+    }
     
     // Challenge 5: Create a function that removes all occurrences of a specific element from a linked list
     
@@ -410,4 +461,22 @@ example(of: "reversing a list") {
     print("Original list: \(list)")
     list.reverse()
     print("Reversed list: \(list)")
+}
+
+example(of: "mergeing two sorted list") {
+    var list = LinkedList<Int>()
+    list.push(4)
+    list.push(3)
+    list.push(2)
+    list.push(1)
+    var anotherList = LinkedList<Int>()
+    anotherList.push(10)
+    anotherList.push(-1)
+    anotherList.push(-2)
+    anotherList.push(-3)
+    
+    print("First list: \(list)")
+    print("Second list: \(anotherList)")
+    let mergedList = LinkedList.merge(list, anotherList)
+    print("Merged list: \(mergedList)")
 }
