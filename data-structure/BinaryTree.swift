@@ -30,6 +30,30 @@ extension BinaryNode: CustomStringConvertible {
 	}
 }
 
+// traversal algorithms
+extension BinaryNode {
+	// in-order
+	public func traversalInOrder(visit: (T) -> Void) {
+		leftChild?.traversalInOrder(visit: visit)
+		visit(value)
+		rightChild?.traversalInOrder(visit: visit)
+	}
+	
+	// pre-order
+	public func traversalPreOrder(visit: (T) -> Void) {
+		visit(value)
+		leftChild?.traversalPreOrder(visit: visit)
+		rightChild?.traversalPreOrder(visit: visit)
+	}
+
+	// post-order
+	public func traversalPostOrder(visit: (T) -> Void) {
+		leftChild?.traversalPostOrder(visit: visit)
+		rightChild?.traversalPostOrder(visit: visit)
+		visit(value)
+	}
+}
+
 func example(of title: String, excute: ()->()) {
 	print("---Example of \(title)---")
 	excute()
@@ -54,4 +78,19 @@ func sampleTree() -> BinaryNode<Int> {
 
 example(of: "tree diagram") {
 	print(sampleTree())
+}
+
+example(of: "in-order traversal") {
+	let tree = sampleTree()
+	tree.traversalInOrder { print($0) }
+}
+
+example(of: "pre-order traversal") {
+	let tree = sampleTree()
+	tree.traversalPreOrder { print($0) }
+}
+
+example(of: "post-order traversal") {
+	let tree = sampleTree()
+	tree.traversalPostOrder { print($0) }
 }
