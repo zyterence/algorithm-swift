@@ -164,4 +164,3 @@ example(of: "serialize a tree into an array") {
 	let node = deserialize(&array)
 	print(node!)
 }
-

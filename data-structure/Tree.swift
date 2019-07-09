@@ -65,10 +65,11 @@ class Queue<T> {
 		guard queue.count > 0 else {
 			return nil
 		}
-		defer {
-			queue.remove(at: 0)
-		}
-		return queue.first
+//		defer {
+//			queue.remove(at: 0)
+//		}
+//		return queue.first
+		return queue.removeFirst()
 	}
 	
 	var isEmpty: Bool {
