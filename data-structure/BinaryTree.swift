@@ -94,3 +94,74 @@ example(of: "post-order traversal") {
 	let tree = sampleTree()
 	tree.traversalPostOrder { print($0) }
 }
+
+// Challenge 1: Given a binary tree, find the height of the tree.
+func height<T>(of node: BinaryNode<T>?) -> Int {
+	guard let node = node else {
+		return -1
+	}
+	return 1 + max(height(of: node.leftChild), height(of: node.rightChild))
+}
+
+example(of: "binary tree height") {
+	let tree = sampleTree()
+	print(height(of: tree))
+	let single = BinaryNode<Int>(value: 10)
+	print(height(of: single))
+	let empty: BinaryNode<Int>? = nil
+	print(height(of: empty))
+}
+
+// Challenge 2: Devise a way to serialize a binary tree into an array, 
+// and a way to deserialize the array back into the binary tree.
+// input
+//	 ┌──nil
+//	┌──25
+//	│ └──17
+//	15
+//	│ ┌──12
+//	└──10
+//	 └──5
+// output
+// [15, 10, 5, nil, nil, 12, nil, nil, 25, 17, nil, nil, nil]
+extension BinaryNode {
+	public func traversalPreOrder(visit: (T?) -> Void) {
+		visit(value)
+		if let leftChild = leftChild {
+			leftChild.traversalPreOrder(visit: visit)
+		} else {
+			visit(nil)
+		}
+		if let rightChild = rightChild {
+			rightChild.traversalPreOrder(visit: visit)
+		} else {
+			visit(nil)
+		}
+	}
+}
+
+func serialize<T>(_ node: BinaryNode<T>) -> [T?] {
+	var array: [T?] = []
+	node.traversalPreOrder { array.append($0) }
+	return array
+}
+
+func deserialize<T>(_ array: inout [T?]) -> BinaryNode<T>? {
+	guard let value = array.removeFirst() else {
+		return nil
+	}
+	
+	let node = BinaryNode(value: value)
+	node.leftChild = deserialize(&array)
+	node.rightChild = deserialize(&array)
+	return node
+}
+
+example(of: "serialize a tree into an array") {
+	let tree = sampleTree()
+	var array = serialize(tree)
+	print(array)
+	let node = deserialize(&array)
+	print(node!)
+}
+
