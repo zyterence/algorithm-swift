@@ -70,6 +70,14 @@ class Queue<T> {
 		}
 		return queue.first
 	}
+	
+	var isEmpty: Bool {
+		if size > 0 {
+			return false
+		} else {
+			return true
+		}
+	}
 }
 
 func example(of title: String, excute: ()->()) {
@@ -152,4 +160,33 @@ example(of: "searching for a node") {
 	} else {
 		print("Couln't find orenge juice")
 	}
+}
+
+// Tree Challenge
+// Print all the values in a tree in an order based on their level.
+// Nodes belonging in the same level should be printed in the same line.
+func printEachLevel<T>(for tree: TreeNode<T>) {
+	let queue = Queue<TreeNode<T>>()
+	var nodesLeftIncurrentLevel = 0
+	queue.enqueue(tree)
+	
+	while !queue.isEmpty {
+		nodesLeftIncurrentLevel = queue.size
+		
+		while nodesLeftIncurrentLevel > 0 {
+			guard let node = queue.dequeue() else { break }
+			
+			print("\(node.value)", terminator: " ")
+			node.children.forEach { queue.enqueue($0) }
+			nodesLeftIncurrentLevel -= 1
+		}
+		
+		print()
+	}
+}
+
+example(of: "print each level for tree") {
+	let tree = makeBeverageTree()
+	
+	printEachLevel(for: tree)
 }
