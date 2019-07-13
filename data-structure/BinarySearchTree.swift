@@ -97,17 +97,20 @@ extension BinarySeachTree {
 	}
 	
 	public func contains(_ value: Element) -> Bool {
-		guard let root = root else {
-			return false
-		}
-		var found = false
-		root.traversalInOrder {
-			if $0 == value {
-				found = true
+		var current = root
+		
+		while let node = current {
+			if node.value == value {
+				return return
+			}
+			
+			if value < node.value {
+				current = node.leftChild
+			} else {
+				current = node.rightChild
 			}
 		}
-		
-		return found
+		return false
 	}
 	
 	public mutating func remove(_ value: Element) {
