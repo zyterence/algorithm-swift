@@ -183,3 +183,74 @@ example(of: "removing a node") {
 	print("Tree after removal:")
 	print(tree)
 }
+
+
+// Binary Search Tree Challenges
+// Challenge 1
+// Create a function that checks if a binary tree is a binary search tree
+
+extension BinaryNode where T: Comparable {
+	
+	var isBinarySearchTree: Bool {
+		return isBST(self, min: nil, max: nil)
+	}
+	
+	private func isBST(_ tree: BinaryNode<T>?, min: T?, max: T?) -> Bool {
+		guard let tree = tree else {
+			return true
+		}
+		
+		if let min = min, tree.value <= min {
+			return false
+		} else if let max = max, tree.value > max {
+			return false
+		}
+		
+		return isBST(tree.leftChild, min: min, max: tree.value) &&
+				isBST(tree.rightChild, min: tree.value, max: max)
+	}
+}
+
+
+// Challenge 2
+// The binary search tree currently lacks Equatable conformance.
+// Your challenge is to confirm adopt the Equatable protocol.
+extension BinarySeachTree: Equatable {
+	
+	public static func ==(lhs: BinarySeachTree, rhs: BinarySeachTree) -> Bool {
+		return isEqual(lhs.root, rhs.root)
+	}
+	
+	private static func isEqual<T: Equatable>(_ node1: BinaryNode<T>?, _ node2: BinaryNode<T>?) -> Bool {
+		guard let leftNode = node1, let rightNode = node2 else {
+			return node1 == nil && node2 == nil
+		}
+		
+		return leftNode.value == rightNode.value &&
+				isEqual(leftNode.leftChild, rightNode.leftChild) &&
+				isEqual(leftNode.rightChild, rightNode.rightChild)
+	}
+}
+
+
+// Challenge 3
+// Create a method that checks if the current tree contains all the elements of another tree.
+
+extension BinarySeachTree where Element: Hashable {
+	
+	public func contains(_ subtree: BinarySeachTree) -> Bool {
+		
+		var set: Set<Element> = []
+		root?.traversalInOrder {
+			set.insert($0)
+		}
+		
+		var isEqual = true
+		
+		subtree.root?.traversalInOrder {
+			isEqual = isEqual && set.contains($0)
+		}
+		
+		return isEqual
+	}
+}
