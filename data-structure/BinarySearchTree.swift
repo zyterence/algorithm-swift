@@ -101,7 +101,7 @@ extension BinarySeachTree {
 		
 		while let node = current {
 			if node.value == value {
-				return return
+				return true
 			}
 			
 			if value < node.value {
@@ -118,8 +118,32 @@ extension BinarySeachTree {
 	}
 	
 	private func remove(node: BinaryNode<Element>?, value: Element) -> BinaryNode<Element>? {
+		guard let node = node else {
+			return nil
+		}
 		
-		return root
+		if value == node.value {
+			if node.leftChild == nil && node.rightChild == nil {
+				return nil
+			}
+			
+			if node.leftChild == nil {
+				return node.rightChild
+			}
+			
+			if node.rightChild == nil {
+				return node.leftChild
+			}
+			
+			node.value = node.rightChild!.min.value
+			node.rightChild = remove(node: node.rightChild, value: node.value)
+		} else if value < node.value {
+			node.leftChild = remove(node: node.leftChild, value: value)
+		} else {
+			node.rightChild = remove(node: node.rightChild, value: value)
+		}
+		
+		return node
 	}
 }
 
@@ -149,4 +173,13 @@ example(of: "finding a node") {
 	} else {
 		print("Couldn't find 5")
 	}
+}
+
+example(of: "removing a node") {
+	var tree = exampleTree
+	print("Tree before removal:")
+	print(tree)
+	tree.remove(3)
+	print("Tree after removal:")
+	print(tree)
 }
