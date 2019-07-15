@@ -1,25 +1,25 @@
-public class BinaryNode<T> {
+public class AVLNode<T> {
 	public var value: T
-	public var leftChild: BinaryNode?
-	public var rightChild: BinaryNode?
+	public var leftChild: AVLNode?
+	public var rightChild: AVLNode?
 	
 	public init(value: T) {
 		self.value = value
 	}
 }
 
-private extension BinaryNode {
-	var min: BinaryNode {
+private extension AVLNode {
+	var min: AVLNode {
 		return leftChild?.min ?? self
 	}
 }
 
-extension BinaryNode: CustomStringConvertible {
+extension AVLNode: CustomStringConvertible {
 	public var description: String {
 		return diagram(for: self)
 	}
 	
-	private func diagram(for node: BinaryNode?, 
+	private func diagram(for node: AVLNode?, 
 						_ top: String = "",
 						_ root: String = "",
 						_ bottom: String = "") -> String {
@@ -38,7 +38,7 @@ extension BinaryNode: CustomStringConvertible {
 
 public struct AVLTree<Element: Comparable> {
 	
-	public private(set) var root: BinaryNode<Element>?
+	public private(set) var root: AVLNode<Element>?
 	
 	public init() { }
 }
@@ -52,7 +52,7 @@ extension AVLTree: CustomStringConvertible {
 }
 
 // traversal algorithms
-extension BinaryNode {
+extension AVLNode {
 	// in-order
 	public func traversalInOrder(visit: (T) -> Void) {
 		leftChild?.traversalInOrder(visit: visit)
@@ -81,10 +81,10 @@ extension AVLTree {
 		root = insert(from: root, value: value)
 	}
 	
-	private func insert(from node: BinaryNode<Element>?, value: Element) -> BinaryNode<Element> {
+	private func insert(from node: AVLNode<Element>?, value: Element) -> AVLNode<Element> {
 		
 		guard let node = node else {
-			return BinaryNode(value: value)
+			return AVLNode(value: value)
 		}
 		
 		if value < node.value {
@@ -117,7 +117,7 @@ extension AVLTree {
 		root = remove(node: root, value: value)
 	}
 	
-	private func remove(node: BinaryNode<Element>?, value: Element) -> BinaryNode<Element>? {
+	private func remove(node: AVLNode<Element>?, value: Element) -> AVLNode<Element>? {
 		guard let node = node else {
 			return nil
 		}
