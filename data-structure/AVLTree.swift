@@ -2,6 +2,7 @@ public class AVLNode<T> {
 	public var value: T
 	public var leftChild: AVLNode?
 	public var rightChild: AVLNode?
+	public var height = 0
 	
 	public init(value: T) {
 		self.value = value
@@ -11,6 +12,18 @@ public class AVLNode<T> {
 private extension AVLNode {
 	var min: AVLNode {
 		return leftChild?.min ?? self
+	}
+	
+	public var balanceFactor: Int {
+		return leftHeight - rightHeight
+	}
+	
+	public var leftHeight: Int {
+		return leftChild?.height ?? -1
+	}
+	
+	public var rightHeight: Int {
+		return rightChild?.height ?? -1
 	}
 }
 
@@ -147,7 +160,29 @@ extension AVLTree {
 	}
 }
 
+// balance
+extension AVLTree {
+	
+	private func leftRotate(_ node: AVLNode<Element>) -> AVLNode<Element> {
+		
+	}
+	
+	private func rightRotate(_ node: AVLNode<Element>) -> AVLNode<Element> {
+		
+	}
 
+	private func rightLeftRotate(_ node: AVLNode<Element>) -> AVLNode<Element> {
+		
+	}
+
+	private func leftRightRotate(_ node: AVLNode<Element>) -> AVLNode<Element> {
+		
+	}
+	
+	private func balanced(_ node: AVLNode<Element>) -> AVLNode<Element> {
+		
+	}
+}
 
 func example(of title: String, excute: ()->()) {
 	print("---Example of \(title)---")
