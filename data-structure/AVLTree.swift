@@ -9,7 +9,7 @@ public class AVLNode<T> {
 	}
 }
 
-private extension AVLNode {
+extension AVLNode {
 	var min: AVLNode {
 		return leftChild?.min ?? self
 	}
