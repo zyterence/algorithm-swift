@@ -146,4 +146,42 @@ class LRUCache<Key: Hashable, Value> {
 			return false
 		}
 	}
+		
+	public func printAll() {
+		print("\(map.keys.count) items in all")
+		for key in map.keys {
+			if let node = map[key] {
+				print("key: \(node.key), value: \(node.value)")
+			}
+		}
+	}
+	
+	public func printList() {
+		if let node = list.head {
+			print("\(node.key): \(node.value)")	
+		}
+		if let node = list.head?.next {
+			print("\(node.key): \(node.value)")	
+		}
+		if let node = list.head?.next?.next {
+			print("\(node.key): \(node.value)")	
+		}
+	}
 }
+
+let cache = LRUCache<Int, String>(3)
+
+cache.set(1, "one")
+cache.set(2, "tow")
+cache.set(3, "three")
+
+cache.printAll()
+cache.printList()
+
+cache.set(2, "four")
+cache.printAll()
+cache.printList()
+
+cache.set(5, "five")
+cache.printAll()
+cache.printList()
