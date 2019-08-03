@@ -60,24 +60,18 @@ public struct DoubleLinkedList<Value> {
 	}
 	
 	public mutating func pop() -> Node<Value>? {
-		guard !isEmpty else {
+		guard let node = head else {
 			return nil
 		}
-		
-		let node = head
-		head = head?.next
-		size -= 1
+		unlink(node)
 		return node
 	}
 	
 	public mutating func popLast() -> Node<Value>? {
-		guard !isEmpty else {
+		guard let node = tail else {
 			return nil
 		}
-		
-		let node = tail
-		tail = tail?.prev
-		size -= 1
+		unlink(node)
 		return node
 	}
 	
