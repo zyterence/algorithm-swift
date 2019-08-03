@@ -13,14 +13,14 @@ public class Node<Value> {
 extension Node: CustomStringConvertible {
 	public var description: String {
 		guard let next = next else {
-			return "\(value)"
+			return "\(value) = tail"
 		}
 		
 		if prev == nil {
-			return "head -> \(value) ->"
+			return "head = \(value) <-> " + String(describing: next)
+		} else {
+			return "\(value) <-> " + String(describing: next)
 		}
-		
-		return "\(value) -> " + String(describing: next) + " "
 	}
 }
 
@@ -39,7 +39,7 @@ public struct DoubleLinkedList<Value> {
 	
 	public mutating func push(_ value: Value) {
 		let node = Node(value: value, next: head, prev: nil)
-		head?.next = node
+		head?.prev = node
 		head = node
 		if tail == nil {
 			tail = head
@@ -47,7 +47,7 @@ public struct DoubleLinkedList<Value> {
 		size += 1
 	}
 	
-	public mutating func append(value: Value) {
+	public mutating func append(_ value: Value) {
 		guard !isEmpty else {
 			push(value)
 			return
@@ -114,11 +114,14 @@ list.push(4)
 list.push(3)
 list.push(2)
 list.push(1)
+print(list.size)
+
 var anotherList = DoubleLinkedList<Int>()
-anotherList.push(10)
-anotherList.push(-1)
-anotherList.push(-2)
-anotherList.push(-3)
-	
+anotherList.append(10)
+anotherList.append(-1)
+anotherList.append(-2)
+anotherList.append(-3)
+print(anotherList.size)
+
 print("First list: \(list)")
 print("Second list: \(anotherList)")
