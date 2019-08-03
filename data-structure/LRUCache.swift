@@ -2,7 +2,7 @@ public class Node<Key, Value> {
 	public var key: Key
 	public var value: Value
 	public var next: Node?
-	public var prev: Node?
+	public weak var prev: Node?
 	
 	public init(key: Key, value: Value, next: Node? = nil, prev: Node? = nil) {
 		self.key = key
