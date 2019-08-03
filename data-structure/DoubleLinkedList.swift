@@ -120,7 +120,7 @@ list.push(3)
 list.push(2)
 list.push(1)
 print(list.size)
-list.remove(list.head!.next!)
+list.remove(list.head!)
 print(list.size)
 
 var anotherList = DoubleLinkedList<Int>()

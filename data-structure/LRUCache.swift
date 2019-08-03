@@ -25,7 +25,8 @@ public struct DoubleLinkedList<Key, Value> {
 		return head == nil
 	}
 	
-	public mutating func push(key: Key, value: Value) {
+	@discardableResult
+	public mutating func push(key: Key, value: Value) -> Node<Key, Value> {
 		let node = Node(key: key, value: value, next: head, prev: nil)
 		head?.prev = node
 		head = node
@@ -33,20 +34,23 @@ public struct DoubleLinkedList<Key, Value> {
 			tail = head
 		}
 		size += 1
+		return node
 	}
 	
-	public mutating func append(key: Key, value: Value) {
+	@discardableResult
+	public mutating func append(key: Key, value: Value) -> Node<Key, Value> {
 		guard !isEmpty else {
-			push(key: key, value: value)
-			return
+			return push(key: key, value: value)
 		}
 		
 		let node = Node(key: key, value: value, next: nil, prev: tail)
 		tail?.next = node
 		tail = node
 		size += 1
+		return node
 	}
 	
+	@discardableResult
 	public mutating func pop() -> Node<Key, Value>? {
 		guard let node = head else {
 			return nil
@@ -55,6 +59,7 @@ public struct DoubleLinkedList<Key, Value> {
 		return node
 	}
 	
+	@discardableResult
 	public mutating func popLast() -> Node<Key, Value>? {
 		guard let node = tail else {
 			return nil
@@ -110,21 +115,26 @@ class LRUCache<Key: Hashable, Value> {
 	public func get(_ key: Key) -> Value? {
 		if self.contains(key) {
 			let node = map[key]
-			
 			return node?.value
 		} else {
-			return nil	
+			return nil
 		}
 	}
 	
 	public func set(_ key: Key, _ value: Value) {
 		if self.contains(key) {
-			
+			if let node = map[key] {
+				list.remove(node)	
+			}
+			map[key] = list.push(key:key, value:value)
 		} else {
 			if list.size == capacity {
-				
+				if let node = list.popLast() {
+					map.removeValue(forKey: node.key)	
+				}
+				map[key] = list.push(key:key, value:value)
 			} else {
-				
+				map[key] = list.push(key: key, value: value)
 			}
 		}
 	}
@@ -137,5 +147,3 @@ class LRUCache<Key: Hashable, Value> {
 		}
 	}
 }
-
-let cache = LRUCache<String, String>(10)
