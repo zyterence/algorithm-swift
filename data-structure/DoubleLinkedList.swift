@@ -1,7 +1,7 @@
 public class Node<Value> {
 	public var value: Value
 	public var next: Node?
-	public var prev: Node?
+	public weak var prev: Node?
 	
 	public init(value: Value, next: Node? = nil, prev: Node? = nil) {
 		self.value = value
@@ -25,9 +25,9 @@ extension Node: CustomStringConvertible {
 }
 
 public struct DoubleLinkedList<Value> {
-	public var head: Node<Value>?
-	public var tail: Node<Value>?
-	fileprivate var size: Int
+	private(set) var head: Node<Value>?
+	private(set) var tail: Node<Value>?
+	private(set) var size: Int
 	
 	public init() {
 		size = 0
@@ -85,17 +85,28 @@ public struct DoubleLinkedList<Value> {
 		guard size > 0 else {
 			return
 		}
+		unlink(node)
+	}
+	
+	private mutating func unlink(_ node: Node<Value>) {
+		let before = node.prev
+		let after = node.next
 		
-		if node.prev === head {
-			head = node.next
+		if before != nil {
+			before?.next = after
 		}
-		if node.next === tail {
-			tail = node.prev
+		
+		if after != nil {
+			after?.prev = before
+		}
+		
+		if head === node {
+			head = head?.next
+		} else if tail === node {
+			tail = tail?.prev
 		}
 		
 		size -= 1
-		node.prev?.next = node.next
-		node.next?.prev = node.prev
 	}
 }
 
@@ -114,6 +125,8 @@ list.push(4)
 list.push(3)
 list.push(2)
 list.push(1)
+print(list.size)
+list.remove(list.head!.next!)
 print(list.size)
 
 var anotherList = DoubleLinkedList<Int>()
