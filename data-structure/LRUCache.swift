@@ -13,9 +13,9 @@ public class Node<Key, Value> {
 }
 
 public struct DoubleLinkedList<Key, Value> {
-	public var head: Node<Key, Value>?
-	public var tail: Node<Key, Value>?
-	fileprivate var size: Int
+	private(set) var head: Node<Key, Value>?
+	private(set) var tail: Node<Key, Value>?
+	private(set) var size: Int
 	
 	public init() {
 		size = 0
@@ -41,30 +41,25 @@ public struct DoubleLinkedList<Key, Value> {
 			return
 		}
 		
-		tail!.next = Node(key: key, value: value, next: nil, prev: tail)
-		tail = tail!.next
+		let node = Node(key: key, value: value, next: nil, prev: tail)
+		tail?.next = node
+		tail = node
 		size += 1
 	}
 	
 	public mutating func pop() -> Node<Key, Value>? {
-		guard !isEmpty else {
+		guard let node = head else {
 			return nil
 		}
-		
-		let node = head
-		head = head?.next
-		size -= 1
+		unlink(node)
 		return node
 	}
 	
 	public mutating func popLast() -> Node<Key, Value>? {
-		guard !isEmpty else {
+		guard let node = tail else {
 			return nil
 		}
-		
-		let node = tail
-		tail = tail?.prev
-		size -= 1
+		unlink(node)
 		return node
 	}
 	
@@ -72,17 +67,28 @@ public struct DoubleLinkedList<Key, Value> {
 		guard size > 0 else {
 			return
 		}
+		unlink(node)
+	}
+	
+	private mutating func unlink(_ node: Node<Key, Value>) {
+		let before = node.prev
+		let after = node.next
 		
-		if node.prev === head {
-			head = node.next
+		if before != nil {
+			before?.next = after
 		}
-		if node.next === tail {
-			tail = node.prev
+		
+		if after != nil {
+			after?.prev = before
+		}
+		
+		if head === node {
+			head = head?.next
+		} else if tail === node {
+			tail = tail?.prev
 		}
 		
 		size -= 1
-		node.prev?.next = node.next
-		node.next?.prev = node.prev
 	}
 }
 
