@@ -157,14 +157,13 @@ class LRUCache<Key: Hashable, Value> {
 	}
 	
 	public func printList() {
-		if let node = list.head {
-			print("\(node.key): \(node.value)")	
-		}
-		if let node = list.head?.next {
-			print("\(node.key): \(node.value)")	
-		}
-		if let node = list.head?.next?.next {
-			print("\(node.key): \(node.value)")	
+		var node = list.head
+		if node == nil { return }
+		print("\(node!.key): \(node!.value)")
+		
+		while let next = node?.next {
+			print("\(next.key): \(next.value)")
+			node = node?.next
 		}
 	}
 }
