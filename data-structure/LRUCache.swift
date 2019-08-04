@@ -114,8 +114,10 @@ class LRUCache<Key: Hashable, Value> {
 	
 	public func get(_ key: Key) -> Value? {
 		if self.contains(key) {
-			let node = map[key]
-			return node?.value
+			let node = map[key]!
+			list.remove(node)
+			map[key] = list.push(key:key, value:node.value)
+			return node.value
 		} else {
 			return nil
 		}
