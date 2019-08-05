@@ -128,6 +128,8 @@ class LRUCache {
 	}
 }
 
+// Runtime: 448 ms, faster than 21.66% of Swift online submissions for LRU Cache.
+// Memory Usage: 24 MB, less than 25.00% of Swift online submissions for LRU Cache.
 extension LRUCache {
 	public func printAll() {
 		print("\(map.keys.count) items in all")
