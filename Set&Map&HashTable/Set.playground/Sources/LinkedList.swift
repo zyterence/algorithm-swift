@@ -63,19 +63,6 @@ public struct LinkedList<Value> where Value: Equatable {
         tail = tail!.next
     }
     
-    public func node(at index: Int) -> Node<Value>? {
-        
-        var currentNode = head
-        var currentIndex = 0
-        
-        while currentNode != nil && currentIndex < index {
-            currentNode = currentNode!.next
-            currentIndex += 1
-        }
-        
-        return currentNode
-    }
-    
     public func contains(_ value: Value) -> Bool {
         var currentNode = head
         
@@ -87,17 +74,6 @@ public struct LinkedList<Value> where Value: Equatable {
         }
         
         return false
-    }
-    
-    @discardableResult
-    public mutating func remove(after node: Node<Value>) -> Value? {
-        defer {
-            if node.next === tail {
-                tail = node
-            }
-            node.next = node.next?.next
-        }
-        return node.next?.value
     }
     
     public mutating func remove(_ value: Value) {
