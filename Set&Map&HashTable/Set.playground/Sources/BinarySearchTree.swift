@@ -77,6 +77,22 @@ extension BinaryNode {
 
 extension BinarySeachTree {
     
+    public var size: Int {
+        var count = 0
+        root?.traversalInOrder {_ in
+            count = count + 1
+        }
+        return count
+    }
+    
+    public var isEmpty: Bool {
+        if root == nil {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     public mutating func insert(_ value: Element) {
         root = insert(from: root, value: value)
     }
@@ -146,44 +162,3 @@ extension BinarySeachTree {
         return node
     }
 }
-
-extension BinaryNode where T: Comparable {
-    
-    var isBinarySearchTree: Bool {
-        return isBST(self, min: nil, max: nil)
-    }
-    
-    private func isBST(_ tree: BinaryNode<T>?, min: T?, max: T?) -> Bool {
-        guard let tree = tree else {
-            return true
-        }
-        
-        if let min = min, tree.value <= min {
-            return false
-        } else if let max = max, tree.value > max {
-            return false
-        }
-        
-        return isBST(tree.leftChild, min: min, max: tree.value) &&
-                isBST(tree.rightChild, min: tree.value, max: max)
-    }
-}
-
-extension BinarySeachTree: Equatable {
-    
-    public static func ==(lhs: BinarySeachTree, rhs: BinarySeachTree) -> Bool {
-        return isEqual(lhs.root, rhs.root)
-    }
-    
-    private static func isEqual<T: Equatable>(_ node1: BinaryNode<T>?, _ node2: BinaryNode<T>?) -> Bool {
-        guard let leftNode = node1, let rightNode = node2 else {
-            return node1 == nil && node2 == nil
-        }
-        
-        return leftNode.value == rightNode.value &&
-                isEqual(leftNode.leftChild, rightNode.leftChild) &&
-                isEqual(leftNode.rightChild, rightNode.rightChild)
-    }
-}
-
-
