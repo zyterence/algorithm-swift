@@ -20,7 +20,7 @@ extension Node: CustomStringConvertible {
     }
 }
 
-public struct LinkedList<Value> where Value: Comparable {
+public struct LinkedList<Value> where Value: Equatable {
     
     public var head: Node<Value>?
     public var tail: Node<Value>?
@@ -31,8 +31,22 @@ public struct LinkedList<Value> where Value: Comparable {
         return head == nil
     }
     
+    public var size: Int {
+        guard head != nil else {
+            return 0
+        }
+        
+        var currentNode = head
+        var count: Int = 0
+        while currentNode != nil {
+            currentNode = currentNode!.next
+            count += 1
+        }
+        
+        return count
+    }
+    
     public mutating func push(_ value: Value) {
-        copyNodes()
         head = Node(value: value, next: head)
         if tail == nil {
             tail = head
@@ -40,7 +54,6 @@ public struct LinkedList<Value> where Value: Comparable {
     }
     
     public mutating func append(_ value: Value) {
-        copyNodes()
         guard !isEmpty else {
             push(value)
             return
@@ -63,52 +76,17 @@ public struct LinkedList<Value> where Value: Comparable {
         return currentNode
     }
     
-    @discardableResult
-    public mutating func insert(_ value: Value, after node: Node<Value>) -> Node<Value> {
-        copyNodes()
-        guard tail !== node else {
-            append(value)
-            return tail!
-        }
+    public func contains(_ value: Value) -> Bool {
+        var currentNode = head
         
-        node.next = Node(value: value, next: node.next)
-        return node.next!
-    }
-    
-    @discardableResult
-    public mutating func pop() -> Value? {
-        defer {
-            head = head?.next
-            if isEmpty {
-                tail = nil
+        while currentNode != nil {
+            if currentNode!.value == value {
+                return true
             }
-        }
-        copyNodes()
-        return head?.value
-    }
-    
-    @discardableResult
-    public mutating func removeLast() -> Value? {
-        copyNodes()
-        guard let head = head else {
-            return nil
+            currentNode = currentNode!.next
         }
         
-        guard head.next != nil else {
-            return pop()
-        }
-        
-        var prev = head
-        var current = head
-        
-        while let next = current.next {
-            prev = current
-            current = next
-        }
-        
-        prev.next = nil
-        tail = prev
-        return current.value
+        return false
     }
     
     @discardableResult
@@ -119,25 +97,23 @@ public struct LinkedList<Value> where Value: Comparable {
             }
             node.next = node.next?.next
         }
-        copyNodes()
         return node.next?.value
     }
     
-    private mutating func copyNodes() {
-        guard var oldNode = head, !isKnownUniquelyReferenced(&head) else {
-            return
+    public mutating func remove(_ value: Value) {
+        var preNode = head
+        var currentNode = head?.next
+        if head != nil && head!.value == value {
+            head = head?.next
         }
         
-        head = Node(value: oldNode.value)
-        var newNode = head
-        
-        while let nextOldNode = oldNode.next {
-            newNode!.next = Node(value: nextOldNode.value)
-            newNode = newNode!.next
-            oldNode = nextOldNode
+        while currentNode != nil {
+            if currentNode!.value == value {
+                preNode?.next = currentNode?.next
+            }
+            preNode = currentNode
+            currentNode = currentNode!.next
         }
-        
-        tail = newNode
     }
 }
 
@@ -150,50 +126,3 @@ extension LinkedList: CustomStringConvertible {
         return String(describing: head)
     }
 }
-
-extension LinkedList: Collection {
-    
-    public struct Index: Comparable {
-        
-        public var node: Node<Value>?
-        
-        static public func ==(lhs: Index, rhs: Index) -> Bool {
-            switch (lhs.node, rhs.node) {
-            case let (left?, right?):
-                return left.next === right.next
-            case (nil, nil):
-                return true
-            default:
-                return false
-            }
-        }
-        
-        static public func <(lhs: Index, rhs: Index) -> Bool {
-            guard lhs != rhs else {
-                return false
-            }
-            
-            let nodes = sequence(first: lhs.node) { $0?.next }
-            
-            return nodes.contains { $0 === rhs.node }
-        }
-    }
-    
-    public var startIndex: LinkedList<Value>.Index {
-        return Index(node: head)
-    }
-    
-    public var endIndex: LinkedList<Value>.Index {
-        return Index(node: tail?.next)
-    }
-    
-    public func index(after i: LinkedList<Value>.Index) -> LinkedList<Value>.Index {
-        return Index(node: i.node?.next)
-    }
-    
-    public subscript(position: Index) -> Value {
-        return position.node!.value
-    }
-}
-
-
