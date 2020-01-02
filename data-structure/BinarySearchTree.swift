@@ -235,7 +235,6 @@ extension BinarySeachTree: Equatable {
 
 // Challenge 3
 // Create a method that checks if the current tree contains all the elements of another tree.
-
 extension BinarySeachTree where Element: Hashable {
 	
 	public func contains(_ subtree: BinarySeachTree) -> Bool {
