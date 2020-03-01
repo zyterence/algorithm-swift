@@ -163,25 +163,25 @@ extension AVLTree {
 // balance
 extension AVLTree {
 	
-	private func leftRotate(_ node: AVLNode<Element>) -> AVLNode<Element> {
-		
-	}
-	
-	private func rightRotate(_ node: AVLNode<Element>) -> AVLNode<Element> {
-		
-	}
-
-	private func rightLeftRotate(_ node: AVLNode<Element>) -> AVLNode<Element> {
-		
-	}
-
-	private func leftRightRotate(_ node: AVLNode<Element>) -> AVLNode<Element> {
-		
-	}
-	
-	private func balanced(_ node: AVLNode<Element>) -> AVLNode<Element> {
-		
-	}
+//	private func leftRotate(_ node: AVLNode<Element>) -> AVLNode<Element> {
+//		
+//	}
+//	
+//	private func rightRotate(_ node: AVLNode<Element>) -> AVLNode<Element> {
+//		
+//	}
+//
+//	private func rightLeftRotate(_ node: AVLNode<Element>) -> AVLNode<Element> {
+//		
+//	}
+//
+//	private func leftRightRotate(_ node: AVLNode<Element>) -> AVLNode<Element> {
+//		
+//	}
+//	
+//	private func balanced(_ node: AVLNode<Element>) -> AVLNode<Element> {
+//		
+//	}
 }
 
 func example(of title: String, excute: ()->()) {
