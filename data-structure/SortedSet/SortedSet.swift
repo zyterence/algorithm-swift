@@ -17,7 +17,7 @@ public protocol SortedSet {
 //}
 
 
-public struct SortedArray<Element>: SortedSet { 􏰂
+public struct SortedArray<Element: Comparable>: SortedSet {
 	fileprivate var storage: [Element] = []
 	public init() {} 
 }
